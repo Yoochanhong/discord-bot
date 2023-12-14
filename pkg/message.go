@@ -5,7 +5,6 @@ import (
 	"log"
 	"regexp"
 	"strings"
-	"time"
 )
 
 func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
@@ -31,11 +30,5 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if r1.MatchString(msg.Content) || r2.MatchString(msg.Content) {
 		log.Printf("%s이 %s라고 말함", msg.Author.Username, msg.Content)
 		s.ChannelMessageSend(msg.ChannelID, "목화재배!")
-	}
-
-	if words[0] == "!port" {
-		log.Printf("%s의 %s 포트 스캐닝 요청", msg.Author.Username, words[1])
-		scanner := MonitorScanner{}
-		scanner.StartScan(words[1], 1, 65535, 500*time.Millisecond, s, msg.ChannelID, msg.Reference())
 	}
 }
