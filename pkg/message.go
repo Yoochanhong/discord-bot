@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"log"
 	"os"
@@ -33,7 +32,7 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	r2, _ := regexp.Compile("(?i)(n[ei]+g+[ea]*r*|n word)")
 	if r1.MatchString(msg.Content) || r2.MatchString(msg.Content) {
 		log.Printf("%s이 %s라고 말함", msg.Author.Username, msg.Content)
-		content := fmt.Sprintf("목화재배!\n %s", gif)
-		s.ChannelMessageSend(msg.ChannelID, content)
+		s.ChannelMessageSend(msg.ChannelID, "목화재배!")
+		s.ChannelMessageSend(msg.ChannelID, gif)
 	}
 }
