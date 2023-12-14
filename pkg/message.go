@@ -36,7 +36,6 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if words[0] == "!port" {
 		log.Printf("%s의 %s 포트 스캐닝 요청", msg.Author.Username, words[1])
 		scanner := MonitorScanner{}
-		scanner.StartScan(words[1], 1, 65535, 500*time.Millisecond)
-		scanner.SendOpenPorts(s, msg.ChannelID, msg.Reference())
+		scanner.StartScan(words[1], 1, 65535, 500*time.Millisecond, s, msg.ChannelID, msg.Reference())
 	}
 }

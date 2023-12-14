@@ -17,31 +17,30 @@ type PortScanner struct {
 }
 
 type Scanner interface {
-	StartScan(ip string, f, l int, timeout time.Duration, s *MonitorScanner)
+	StartScan(ip string, f, l int, timeout time.Duration)
 }
 
-type MonitorScanner struct {
-	openPorts []string
-}
+type MonitorScanner struct{}
 
-func (s *MonitorScanner) TCPScanPort(ip string, port int, timeout time.Duration) {
+func TCPScanPort(ip string, port int, timeout time.Duration, session *discordgo.Session, channelID string, msgRef *discordgo.MessageReference) {
 	target := fmt.Sprintf("%s:%d", ip, port)
 	conn, err := net.DialTimeout("tcp", target, timeout)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "too many open files") {
 			time.Sleep(timeout)
-			s.TCPScanPort(ip, port, timeout)
+			TCPScanPort(ip, port, timeout, session, channelID, msgRef)
 		}
 		return
 	}
 
-	s.openPorts = append(s.openPorts, target)
+	msg := fmt.Sprintf("%s 열린포트는 %s 입니다", ip, port)
+	session.ChannelMessageSendReply(channelID, msg, msgRef)
 
 	defer conn.Close()
 }
 
-func (s *MonitorScanner) StartWithMonitor(ip string, f, l int, timeout time.Duration) {
+func (s *MonitorScanner) StartWithMonitor(ip string, f, l int, timeout time.Duration, session *discordgo.Session, channelID string, ref *discordgo.MessageReference) {
 	ps := &PortScanner{
 		ip:        ip,
 		available: 256,
@@ -57,7 +56,7 @@ func (s *MonitorScanner) StartWithMonitor(ip string, f, l int, timeout time.Dura
 		ps.lock.Unlock()
 
 		go func(port int) {
-			s.TCPScanPort(ip, port, timeout)
+			TCPScanPort(ip, port, timeout, session, channelID, ref)
 
 			ps.lock.Lock()
 			ps.available++
@@ -67,25 +66,6 @@ func (s *MonitorScanner) StartWithMonitor(ip string, f, l int, timeout time.Dura
 	}
 }
 
-func (s *MonitorScanner) SendOpenPorts(session *discordgo.Session, channelID string, msgRef *discordgo.MessageReference) {
-
-	openPortsStr := strings.Join(s.openPorts, "\n")
-
-	embed := &discordgo.MessageEmbed{
-		Title: "Open Ports",
-		Color: 0x00ff00,
-		Fields: []*discordgo.MessageEmbedField{
-			{
-				Name:   "Ports",
-				Value:  openPortsStr,
-				Inline: true,
-			},
-		},
-	}
-
-	session.ChannelMessageSendEmbedReply(channelID, embed, msgRef)
-}
-
-func (s *MonitorScanner) StartScan(ip string, f, l int, timeout time.Duration) {
-	s.StartWithMonitor(ip, f, l, timeout)
+func (s *MonitorScanner) StartScan(ip string, f, l int, timeout time.Duration, session *discordgo.Session, channelID string, msgRef *discordgo.MessageReference) {
+	s.StartWithMonitor(ip, f, l, timeout, session, channelID, msgRef)
 }
