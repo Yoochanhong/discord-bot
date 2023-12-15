@@ -56,22 +56,25 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		}
 
 		var builder strings.Builder
-		builder.WriteString(fmt.Sprintf("오늘부터 지지관계에서 벗어나\n쓱규와(과) %s는 한몸으로 일체가 된다\n쓱규에 대한 공격은 %s에 대한 공격으로 간주한다\n\n", username, username))
+		builder.WriteString(fmt.Sprintf("오늘부터 지지관계에서 벗어나\n쓱규와(과) %s은(는) 한몸으로 일체가 된다\n쓱규에 대한 공격은 %s에 대한 공격으로 간주한다\n\n", username, username))
 
 		for _, fans := range []string{"70억", "1억", "천만", "백", "한"} {
-			builder.WriteString(fmt.Sprintf("세상에 %s 명의 쓱규 팬이 있다면, %s는 그들 중 한 명일 것이다.\n", fans, username))
+			builder.WriteString(fmt.Sprintf("세상에 %s 명의 쓱규 팬이 있다면, %s은(는) 그들 중 한 명일 것이다.\n", fans, username))
 		}
-		builder.WriteString(fmt.Sprintf("세상에 단 한 명의 쓱규 팬도 없다면, %s는 그제서야 이 세상에 없는 것이다.\n\n", username))
+		builder.WriteString(fmt.Sprintf("세상에 단 한 명의 쓱규 팬도 없다면, %s은(는) 그제서야 이 세상에 없는 것이다.\n\n", username))
 
 		for _, attribute := range []string{"사랑", "빛", "어둠", "삶", "기쁨", "슬픔", "안식", "영혼"} {
 			builder.WriteString(fmt.Sprintf("쓱규, %s의 %s.\n", username, attribute))
 		}
-		builder.WriteString(fmt.Sprintf("쓱규, %s.\n%s.", username, username))
+		builder.WriteString(fmt.Sprintf("쓱규, %s.\n", username))
 
 		embed := &discordgo.MessageEmbed{
 			Title:       "지지관계",
 			Description: builder.String(),
 			Color:       0x00ff00,
+			Footer: &discordgo.MessageEmbedFooter{
+				Text: fmt.Sprintf("-%s-", username),
+			},
 		}
 		s.ChannelMessageSendEmbed(msg.ChannelID, embed)
 	}
