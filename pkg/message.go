@@ -57,7 +57,7 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		}
 
 		var builder strings.Builder
-		builder.WriteString(fmt.Sprintf("오늘부터 지지관계에서 벗어나\n쓱규와 %s 한몸으로 일체가 된다\n쓱규에 대한 공격은 %s에 대한 공격으로 간주한다\n\n", username, hangul.GetJosa(username, hangul.EUN_NEUN)))
+		builder.WriteString(fmt.Sprintf("오늘부터 지지관계에서 벗어나\n쓱규와 %s 한몸으로 일체가 된다\n쓱규에 대한 공격은 %s에 대한 공격으로 간주한다\n\n", hangul.GetJosa(username, hangul.EUN_NEUN), username))
 
 		for _, fans := range []string{"70억", "1억", "천만", "백", "한"} {
 			builder.WriteString(fmt.Sprintf("세상에 %s 명의 쓱규 팬이 있다면, %s 그들 중 한 명일 것이다.\n", fans, hangul.GetJosa(username, hangul.EUN_NEUN)))
