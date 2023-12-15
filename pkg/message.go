@@ -46,7 +46,7 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 
 	if words[0] == "!지지관계" {
 		var username string
-		if words[1] == "김현석" || words[1] == "khs0826" || words[1] == "pokabook" {
+		if words[1] == "김현석" || words[1] == "khs0826" || words[1] == "pokabook" || strings.ToLower(words[1]) == "kimhyeonseok" {
 			username = "도원준"
 		} else {
 			username = words[1]
