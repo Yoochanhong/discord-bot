@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"fmt"
+	"github.com/LoperLee/golang-hangul-toolkit/hangul"
 	"github.com/bwmarrin/discordgo"
 	"image/color"
 	"image/png"
@@ -10,6 +11,8 @@ import (
 	"regexp"
 	"strings"
 )
+
+var gif = os.Getenv("GIF")
 
 func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 
@@ -45,20 +48,21 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	}
 
 	if words[0] == "!지지관계" {
+		nameRegxep, _ := regexp.Compile("^김현석$")
 		var username string
-		if words[1] == "김현석" || words[1] == "khs0826" || words[1] == "pokabook" || strings.ToLower(words[1]) == "kimhyeonseok" {
-			username = "도원준"
+		if nameRegxep.MatchString(words[1]) {
+			username = "조승우"
 		} else {
 			username = words[1]
 		}
 
 		var builder strings.Builder
-		builder.WriteString(fmt.Sprintf("오늘부터 지지관계에서 벗어나\n쓱규와(과) %s은(는) 한몸으로 일체가 된다\n쓱규에 대한 공격은 %s에 대한 공격으로 간주한다\n\n", username, username))
+		builder.WriteString(fmt.Sprintf("오늘부터 지지관계에서 벗어나\n쓱규와 %s 한몸으로 일체가 된다\n쓱규에 대한 공격은 %s에 대한 공격으로 간주한다\n\n", username, hangul.GetJosa(username, hangul.EUN_NEUN)))
 
 		for _, fans := range []string{"70억", "1억", "천만", "백", "한"} {
-			builder.WriteString(fmt.Sprintf("세상에 %s 명의 쓱규 팬이 있다면, %s은(는) 그들 중 한 명일 것이다.\n", fans, username))
+			builder.WriteString(fmt.Sprintf("세상에 %s 명의 쓱규 팬이 있다면, %s 그들 중 한 명일 것이다.\n", fans, hangul.GetJosa(username, hangul.EUN_NEUN)))
 		}
-		builder.WriteString(fmt.Sprintf("세상에 단 한 명의 쓱규 팬도 없다면, %s은(는) 그제서야 이 세상에 없는 것이다.\n\n", username))
+		builder.WriteString(fmt.Sprintf("세상에 단 한 명의 쓱규 팬도 없다면, %s 그제서야 이 세상에 없는 것이다.\n\n", hangul.GetJosa(username, hangul.EUN_NEUN)))
 
 		for _, attribute := range []string{"사랑", "빛", "어둠", "삶", "기쁨", "슬픔", "안식", "영혼"} {
 			builder.WriteString(fmt.Sprintf("쓱규, %s의 %s.\n", username, attribute))
