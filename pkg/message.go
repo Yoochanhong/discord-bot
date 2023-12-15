@@ -48,10 +48,10 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	}
 
 	if words[0] == "!지지관계" {
-		nameRegxep, _ := regexp.Compile("^김현석$")
+		usernameRegexp, _ := regexp.Compile("((김현석|khs0826|pokabook|kimhyeonseok|김현seok)|([가-힣]+[a-z]+|[a-z]+[가-힣]+))")
 		var username string
-		if nameRegxep.MatchString(words[1]) {
-			username = "조승우"
+		if usernameRegexp.MatchString(words[1]) {
+			username = "도원준"
 		} else {
 			username = words[1]
 		}
