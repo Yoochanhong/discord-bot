@@ -52,7 +52,7 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		if nameRegxep.MatchString(words[1]) {
 			username = "조승우"
 		} else {
-			username = words[0]
+			username = words[1]
 		}
 
 		var builder strings.Builder
@@ -69,7 +69,7 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		builder.WriteString(fmt.Sprintf("쓱규, %s.\n%s.", username, username))
 
 		embed := &discordgo.MessageEmbed{
-			Title:       "# 지지관계",
+			Title:       "지지관계",
 			Description: builder.String(),
 			Color:       0x00ff00,
 		}
