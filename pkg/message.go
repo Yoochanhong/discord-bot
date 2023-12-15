@@ -11,8 +11,6 @@ import (
 	"strings"
 )
 
-var gif = os.Getenv("GIF")
-
 func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 
 	if s.State.User.ID == msg.Author.ID {
@@ -47,10 +45,9 @@ func MessageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	}
 
 	if words[0] == "!지지관계" {
-		nameRegxep, _ := regexp.Compile("^김현석$")
 		var username string
-		if nameRegxep.MatchString(words[1]) {
-			username = "조승우"
+		if words[1] == "김현석" || words[1] == "khs0826" || words[1] == "pokabook" {
+			username = "도원준"
 		} else {
 			username = words[1]
 		}
